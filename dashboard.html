@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuildVerse - Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+   <script src="js/firebase-config.js"></script>
+</head>
+<body>
+  <!-- Navigation Sidebar -->
+  <div class="dashboard-container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <a href="#" class="logo-link">
+          <i class="fas fa-code"></i>
+          <h1>BuildVerse</h1>
+        </a>
+        <p class="tagline">Where projects find people and people find purpose</p>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul>
+            <li data-target="profile-section">
+              <i class="fas fa-user"></i>
+              <span>My Profile</span>
+            </li>
+            <li data-target="contribute-section">
+              <i class="fas fa-hands-helping"></i>
+              <span>Contribute</span>
+            </li>
+            <li data-target="upload-section">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>Upload Projects</span>
+            </li>
+          </ul>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button class="btn btn-logout">
+          <i class="fas fa-sign-out-alt"></i> LOGOUT
+        </button>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Profile Section (Default View) -->
+      <section id="profile-section" class="content-section active">
+        <div class="profile-header">
+          <h2><i class="fas fa-user-circle me-2"></i>My Profile</h2>
+        </div>
+        
+        <div class="profile-content">
+          <div class="profile-card">
+            <div class="profile-avatar">
+              <i class="fas fa-user-astronaut"></i>
+            </div>
+            <div class="profile-info">
+              <div class="info-item">
+                <span class="info-label">User Name:</span>
+                <span class="info-value" id="username-display">JohnDoe42</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Skill Level:</span>
+                <span class="info-value" id="skill-level">Intermediate</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Contributions:</span>
+                <span class="info-value" id="contributions-count">8</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Projects Uploaded:</span>
+                <span class="info-value" id="projects-uploaded">3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Contribute Section -->
+      <section id="contribute-section" class="content-section">
+        <div class="section-header">
+          <h2><i class="fas fa-hands-helping me-2"></i>Contribute</h2>
+          <div class="section-tabs">
+            <button class="tab-btn active" data-tab="available-projects">Available Projects</button>
+            <button class="tab-btn" data-tab="ongoing-projects">Ongoing Projects</button>
+          </div>
+        </div>
+        
+        <div class="tab-content active" id="available-projects">
+          <div class="project-card">
+            <h3 class="project-title">Animal Avengers</h3>
+            <p class="project-description">Required assistance in geo location tracking implementation</p>
+            <div class="project-meta">
+              <span class="badge bg-primary">JavaScript</span>
+              <span class="badge bg-secondary">Maps API</span>
+            </div>
+            <button class="btn btn-contribute">Contribute</button>
+          </div>
+          
+          <div class="project-card">
+            <h3 class="project-title">AI Chatbot</h3>
+            <p class="project-description">Difficulties in model training and optimization</p>
+            <div class="project-meta">
+              <span class="badge bg-primary">Python</span>
+              <span class="badge bg-secondary">Machine Learning</span>
+            </div>
+            <button class="btn btn-contribute">Contribute</button>
+          </div>
+          
+          <div class="project-card">
+            <h3 class="project-title">Uni-Media</h3>
+            <p class="project-description">Required data analysis expert for user metrics</p>
+            <div class="project-meta">
+              <span class="badge bg-primary">Python</span>
+              <span class="badge bg-secondary">Data Science</span>
+            </div>
+            <button class="btn btn-contribute">Contribute</button>
+          </div>
+        </div>
+        
+        <div class="tab-content" id="ongoing-projects">
+          <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <h3>NO ONGOING PROJECTS</h3>
+            <p>You're not currently contributing to any projects</p>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Upload Projects Section -->
+      <section id="upload-section" class="content-section">
+        <div class="section-header">
+          <h2><i class="fas fa-cloud-upload-alt me-2"></i>Upload Projects</h2>
+        </div>
+        
+        <div class="upload-container">
+          <div class="uploaded-projects">
+            <h3>UPLOADED PROJECTS</h3>
+            <div class="empty-state">
+              <i class="fas fa-folder-open"></i>
+              <h4>No uploaded projects</h4>
+              <p>You haven't uploaded any projects yet</p>
+            </div>
+          </div>
+          
+          <div class="upload-form">
+            <h3>Enter Your Project Details</h3>
+            <form id="projectUploadForm">
+              <div class="form-group">
+                <label for="projectTitle">Project title</label>
+                <input type="text" id="projectTitle" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="projectDescription">Project description and required assistance</label>
+                <textarea id="projectDescription" class="form-control" rows="4" required></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="githubLink">GitHub repository link</label>
+                <input type="url" id="githubLink" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="projectTags">Tags (comma separated)</label>
+                <input type="text" id="projectTags" class="form-control" placeholder="JavaScript, API, Web Development">
+              </div>
+              
+              <button type="submit" class="btn btn-upload">
+                <i class="fas fa-upload me-2"></i> UPLOAD
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
