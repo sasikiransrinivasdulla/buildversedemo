@@ -363,6 +363,34 @@
     font-size: 0.8rem;
 }
 
+/* Ongoing projects specific styles */
+.ongoing-project {
+    border-left: 4px solid var(--primary);
+    background-color: rgba(108, 99, 255, 0.05);
+}
+
+/* Empty state styles */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #dee2e6;
+}
+
+.empty-state h3, .empty-state h4 {
+    margin-bottom: 0.5rem;
+}
+
+/* Project card transitions */
+.project-card {
+    transition: all 0.3s ease;
+}
+
 .project-meta {
     margin: 10px 0;
     display: flex;

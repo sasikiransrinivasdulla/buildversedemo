@@ -87,12 +87,31 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.classList.contains('btn-contribute')) {
             const projectCard = e.target.closest('.project-card');
             const projectTitle = projectCard.querySelector('.project-title').textContent;
+            const projectDescription = projectCard.querySelector('.project-description').textContent;
+            const projectTags = Array.from(projectCard.querySelectorAll('.badge')).map(badge => badge.textContent);
+            
+            // Create ongoing project object
+            const ongoingProject = {
+                title: projectTitle,
+                description: projectDescription,
+                tags: projectTags,
+                status: "In Progress"
+            };
+            
+            // Add to ongoing projects
+            addToOngoingProjects(ongoingProject);
+            
+            // Remove from available projects
+            projectCard.remove();
             
             // Update UI to reflect contribution
             e.target.textContent = 'Contributing';
             e.target.classList.add('btn-success');
             e.target.classList.remove('btn-primary');
             e.target.disabled = true;
+            
+            // Update contributions count
+            updateContributionsCount();
             
             alert(`You're now contributing to: ${projectTitle}`);
         }
@@ -133,9 +152,43 @@ document.addEventListener('DOMContentLoaded', function() {
         projectList.insertBefore(projectCard, projectList.firstChild);
     }
     
+    // Function to add project to ongoing section
+    function addToOngoingProjects(project) {
+        const ongoingContainer = document.getElementById('ongoing-projects');
+        
+        // Remove empty state if it exists
+        const emptyState = ongoingContainer.querySelector('.empty-state');
+        if (emptyState) {
+            emptyState.remove();
+        }
+        
+        // Create ongoing project card
+        const projectCard = document.createElement('div');
+        projectCard.className = 'project-card ongoing-project';
+        projectCard.innerHTML = `
+            <h3 class="project-title">${project.title}</h3>
+            <p class="project-description">${project.description}</p>
+            <div class="project-meta">
+                ${project.tags.map(tag => `<span class="badge bg-primary">${tag}</span>`).join('')}
+            </div>
+            <button class="btn btn-success" disabled>
+                <i class="fas fa-check-circle"></i> Contributing
+            </button>
+        `;
+        
+        ongoingContainer.appendChild(projectCard);
+    }
+    
     // Function to update projects count
     function updateProjectsCount() {
         const countElement = document.getElementById('projects-uploaded');
+        const currentCount = parseInt(countElement.textContent) || 0;
+        countElement.textContent = currentCount + 1;
+    }
+    
+    // Function to update contributions count
+    function updateContributionsCount() {
+        const countElement = document.getElementById('contributions-count');
         const currentCount = parseInt(countElement.textContent) || 0;
         countElement.textContent = currentCount + 1;
     }
